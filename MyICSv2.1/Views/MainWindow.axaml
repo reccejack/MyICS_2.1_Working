@@ -1,0 +1,124 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MyICSv2._1.ViewModels"
+        xmlns:local="using:MyICSv2._1.Models"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
+        x:Class="MyICSv2._1.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Width="1000"
+        Height="450"
+        Background="DarkBlue"
+        Title="MyICSv2.1">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <!--PRIMARY GUI STACKPANEL-->
+    <StackPanel>
+        <!--MAIN MENU PANEL-->
+        <StackPanel Orientation="Horizontal" Background="Gray">            
+            <Menu>
+                <MenuItem Header="System" Width="100" Height="30">
+                    <MenuItem Header="Process">
+                        <MenuItem Header="Add Process" Click="OnClick_AddProcess"/>
+                        <MenuItem Header="Remove" Click="OnClick_RemoveProcess"/>
+                    </MenuItem>
+                    <MenuItem Header="Device">
+                        <MenuItem Header="Add Device" Click="OnClick_AddDevice"/>
+                        <MenuItem Header="Remove" Click="OnClick_RemoveDevice"/>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Actions</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Network</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Tools</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Historian</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Settings</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Help</Button>
+        </StackPanel>
+        
+        <!--PROCESS PANEL-->        
+        <StackPanel Margin="5">
+            
+            <!--Process Panel Banner-->
+            <TextBlock Text="[SystemName] Overview" FontSize="16" FontWeight="Bold" Foreground="White" Background="Blue" Height="25" Margin="1,1,1,5"/>
+                        
+        </StackPanel>
+        
+        <!--Process Header-->
+        <Grid ColumnDefinitions="*, *, *, *, *" Background="LightGray">
+            <Label Content="Process ID" Grid.Column="0" Margin="10,0,0,0"/>
+            <Label Content="Status" Grid.Column="1" Margin="10,0,0,0"/>
+            <Label Content="Connection" Grid.Column="2" Margin="10,0,0,0"/>
+            <Label Content="Alarms" Grid.Column="3" Margin="10,0,0,0"/>
+            <Label Content="Reports" Grid.Column="4" Margin="10,0,0,0"/>              
+        </Grid>
+
+        <!--Process Dataview Field-->
+        <ListBox x:Name="InputListBox1" ItemsSource="{Binding Processes}" SelectedItem="{Binding SelectedProcess, Mode=TwoWay}" Height="110">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*, *, *, *, *" Margin="2" Background="WhiteSmoke">
+                        <TextBlock Text="{Binding ProcessId}" Grid.Column="0" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding ProcessStatus}" Grid.Column="1" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding Connection}" Grid.Column="2" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding IsAlarm}" Grid.Column="3" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding ProcessReport}" Grid.Column="4" Margin="10,2,0,2" Foreground="Black"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        
+
+        <!--DEVICE PANEL-->
+        <!--Device Panel Banner and Menu-->
+        <StackPanel Orientation="Horizontal" Background="Blue" Height="30" Margin="1,1,5,5">                        
+            <Label Content="[ProcessName]" FontSize="16" FontWeight="Bold" Foreground="White" VerticalContentAlignment="Center"/>
+            <Label Width="75"/>                                 
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Configure</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Connect</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Report Logs</Button>
+            <Label Width="200"/>
+            <Button Width="110" Height="30" HorizontalContentAlignment="Center" Background="LightGoldenrodYellow">Pause Device</Button>
+            <Label Width="20"/>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="PaleVioletRed">Disconnect</Button>            
+        </StackPanel>
+
+        <!--Device Panel Header-->
+        <Grid ColumnDefinitions="*, *, *, *, *, *, *, *" Background="LightGray">
+            <Label Content="Device ID" Grid.Column="0" Margin="10,0,0,0"/>
+            <Label Content="Make" Grid.Column="1" Margin="10,0,0,0"/>
+            <Label Content="Model" Grid.Column="2" Margin="10,0,0,0"/>
+            <Label Content="Reading" Grid.Column="3" Margin="10,0,0,0"/>
+            <Label Content="Mean/Mode" Grid.Column="4" Margin="10,0,0,0"/>
+            <Label Content="Protocol" Grid.Column="5" Margin="10,0,0,0"/>
+            <Label Content="Security" Grid.Column="6" Margin="10,0,0,0"/>
+            <Label Content="DTG" Grid.Column="7" Margin="10,0,0,0"/>
+        </Grid>
+
+        <!--Device Dataview Field-->
+        <ListBox x:Name="InputListBoxDevices" ItemsSource="{Binding SelectedProcessDevices}" Height="120">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*, *, *, *, *, *, *, *" Margin="2" Background="WhiteSmoke">
+                        <TextBlock Text="{Binding DeviceId}" Grid.Column="0" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DeviceName}" Grid.Column="1" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding SubProcess}" Grid.Column="2" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding ReadingType}" Grid.Column="3" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DeviceAverage}" Grid.Column="4" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DeviceAddressIPv4}" Grid.Column="5" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DeviceSecurity}" Grid.Column="6" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DateTime}" Grid.Column="7" Margin="10,2,0,2" Foreground="Black"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </StackPanel>
+</Window>
