@@ -12,6 +12,7 @@ using System.Dynamic;
 using Avalonia.Controls;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace MyICSv2._1.ViewModels;
 
@@ -141,15 +142,43 @@ public partial class MainViewModel : ViewModelBase
                               .AsNoTracking()
                               .ToListAsync();
 
-        System.Diagnostics.Debug.WriteLine($"Devices found: {devices.Count}");
+        System.Diagnostics.Debug.WriteLine($"Devices found: {devices.Count}");        
         await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             SelectedProcessDevices.Clear();
             foreach (var d in devices)
                 SelectedProcessDevices.Add(d);
             // Update status text with selected process and device count and DB path
-            var dbPath = MyICSv2._1.App.DbPath ?? "(unknown db path)";
-            //string StatusText = $"Selected '{process.ProcessId}': {devices.Count} device(s) loaded from {dbPath}";                       
+            var dbPath = MyICSv2._1.App.DbPath ?? "(unknown db path)";                                   
         });
     }
+
+    //public async Task UpdateDevice(Device device)
+    //{
+    //    //POTENTIAL FUTURE 'HISTORIAN' IMPLEMENTATION
+    //    //await using var db = await _dbFactory.CreateDbContextAsync();
+    //    //var existingDevice = await db.Devices.FirstOrDefaultAsync(d => d.DeviceId == device.DeviceId);
+    //    //if (existingDevice != null)
+    //    //{
+    //    //    existingDevice.ReadingType = device.ReadingType;
+    //    //    existingDevice.DeviceAverage = device.DeviceAverage;
+    //    //    existingDevice.DateTime = device.DateTime;
+    //    //    await db.SaveChangesAsync();
+    //    //}
+
+    //    for (int i = 0; i < SelectedProcessDevices.Count; i++)
+    //        if (SelectedProcessDevices[i].DeviceId == device.DeviceId)
+    //        {
+
+    //            //PIPE IN I/O DATA HERE
+    //            string updatedReadingType = "testString";
+
+    //            await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+    //            {
+    //                SelectedProcessDevices[i].ReadingType = updatedReadingType; // Notify UI of the change
+    //            });
+
+    //            break;
+    //        }        
+    //}
 }
