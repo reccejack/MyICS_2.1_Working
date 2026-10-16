@@ -11,11 +11,14 @@ using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore.Design;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MyICSv2._1.Models
 {
-    public class Device
+    public class Device : ObservableObject
     {
+        private string _readingType = string.Empty;
+
         [Key]
         public int DeviceId { get; set; }
 
@@ -27,8 +30,15 @@ namespace MyICSv2._1.Models
         [MaxLength(12)]
         public string SubProcess { get; set; } = string.Empty;
 
-        [MaxLength(5)]
-        public string ReadingType { get; set; } = string.Empty;
+        [MaxLength(5)]        
+        //public string ReadingType { get; set; } = string.Empty;
+
+        public string ReadingType
+        {
+            get => _readingType;
+            set => SetProperty(ref _readingType, value);
+        }
+
 
         [MaxLength(5)]
         public string DeviceAverage { get; set; } = string.Empty;
@@ -55,6 +65,6 @@ namespace MyICSv2._1.Models
         }
 
         // Navigation property for many-to-many relationship with Process
-        public virtual ICollection<IndustryProcess> Processes { get; set; } = new List<IndustryProcess>();
+        public virtual ICollection<IndustryProcess> Processes { get; set; } = new List<IndustryProcess>();        
     }
 }

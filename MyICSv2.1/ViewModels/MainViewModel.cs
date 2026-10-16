@@ -13,6 +13,7 @@ using Avalonia.Controls;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.ComponentModel;
 
 namespace MyICSv2._1.ViewModels;
 
@@ -153,6 +154,8 @@ public partial class MainViewModel : ViewModelBase
         });
     }
 
+    //public async Task UpdateDevice(Device device){}
+
     //public async Task UpdateDevice(Device device)
     //{
     //    //POTENTIAL FUTURE 'HISTORIAN' IMPLEMENTATION
@@ -167,6 +170,7 @@ public partial class MainViewModel : ViewModelBase
     //    //}
 
     //    for (int i = 0; i < SelectedProcessDevices.Count; i++)
+    //    {
     //        if (SelectedProcessDevices[i].DeviceId == device.DeviceId)
     //        {
 
@@ -179,6 +183,28 @@ public partial class MainViewModel : ViewModelBase
     //            });
 
     //            break;
-    //        }        
+    //        }
+    //    }            
     //}
+
+    public async Task UpdateDevice(Device processDevice, string output)
+    {
+
+        //POTENTIAL FUTURE 'HISTORIAN' IMPLEMENTATION
+        //await using var db = await _dbFactory.CreateDbContextAsync();
+        //var existingDevice = await db.Devices.FirstOrDefaultAsync(d => d.DeviceId == device.DeviceId);
+        //if (existingDevice != null)
+        //{
+        //    existingDevice.ReadingType = device.ReadingType;
+        //    existingDevice.DeviceAverage = device.DeviceAverage;
+        //    existingDevice.DateTime = device.DateTime;
+        //    await db.SaveChangesAsync();
+        //}
+
+        //TEST CODE (POTENTIALLY DELETE HERE SOON)
+        await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            processDevice.ReadingType = output; // Notify UI of the change
+        });
+    }
 }

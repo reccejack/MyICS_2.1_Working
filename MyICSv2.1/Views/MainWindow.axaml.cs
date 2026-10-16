@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using MyICSv2._1.Models;
 using MyICSv2._1.Data;
 using MyICSv2._1.ViewModels;
+using MyICSv2._1.Migrations;
 
 namespace MyICSv2._1.Views;
 
@@ -85,5 +86,16 @@ public partial class MainWindow : Window
         // Load devices for the selected process
         await ViewModel.LoadSelectedProcessDevicesAsync(selectedProcess);
         //ExampleBlock.Text = $"Process ID: {selectedProcess.ProcessId} Process Name: {selectedProcess.IsAlarm}";
+    }
+
+    //EXPERIMENTATION (16 OCT 2026)
+    private async void OnClickTestButton(object? sender, RoutedEventArgs e)
+    {
+        //await ViewModel.UpdateDevice(ViewModel.Devices[0].ReadingType);
+        for(int i = 0; i < ViewModel.SelectedProcessDevices.Count; i++)
+        {
+            await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], "0000");
+            System.Diagnostics.Debug.WriteLine($"Selected: {ViewModel.SelectedProcessDevices[i].ReadingType}");
+        }        
     }
 }

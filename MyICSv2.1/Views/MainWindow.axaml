@@ -120,5 +120,9 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
+        <Button x:Name="TestButtton" Content="Test" Click="OnClickTestButton" Background="Orange"/>
+            
+        
+
     </StackPanel>
 </Window>
