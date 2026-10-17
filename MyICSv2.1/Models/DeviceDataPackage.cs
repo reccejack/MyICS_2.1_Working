@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using MyICSv2._1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MyICSv2._1
+namespace MyICSv2._1.Models
 {
     internal class DeviceDataPackage
     {
@@ -25,7 +24,7 @@ namespace MyICSv2._1
             //DDP Constructor w/ properties
         }
 
-        public async void DDPHandler(string incomingMessage)
+        public async void PropertyHandler(string incomingMessage)
         {
             //INSERT I/O code here            
             //[] DeviceID.Is this device recognized? Y / N(build in fault handler)
