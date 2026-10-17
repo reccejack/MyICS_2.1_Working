@@ -89,7 +89,7 @@ public partial class MainWindow : Window
     }
 
     //EXPERIMENTATION (16 OCT 2026)
-    private async void OnClickTestButton(object? sender, RoutedEventArgs e)
+    private async void OnClickConnect(object? sender, RoutedEventArgs e)
     {
         //await ViewModel.UpdateDevice(ViewModel.Devices[0].ReadingType);
         for(int i = 0; i < ViewModel.SelectedProcessDevices.Count; i++)

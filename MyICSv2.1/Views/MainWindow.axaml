@@ -82,7 +82,7 @@
             <Label Content="[ProcessName]" FontSize="16" FontWeight="Bold" Foreground="White" VerticalContentAlignment="Center"/>
             <Label Width="75"/>                                 
             <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Configure</Button>
-            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Connect</Button>
+            <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray" Click="OnClickConnect">Connect</Button>
             <Button Width="100" Height="30" HorizontalContentAlignment="Center" Background="Gray">Report Logs</Button>
             <Label Width="200"/>
             <Button Width="110" Height="30" HorizontalContentAlignment="Center" Background="LightGoldenrodYellow">Pause Device</Button>
@@ -118,11 +118,6 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
-
-        <Button x:Name="TestButtton" Content="Test" Click="OnClickTestButton" Background="Orange"/>
-            
-        
-
+        </ListBox>                          
     </StackPanel>
 </Window>
