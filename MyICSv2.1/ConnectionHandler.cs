@@ -1,20 +1,25 @@
 ﻿using Avalonia.Animation.Easings;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using MyICSv2._1.Models;
+using MyICSv2._1.ViewModels;
+using MyICSv2._1.Views;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Tmds.DBus.Protocol;
 
 namespace MyICSv2._1
 {
-    internal class ConnectionHandler
+    public class ConnectionHandler
     {
         static Socket socket;
         static Socket accepted;
@@ -25,6 +30,7 @@ namespace MyICSv2._1
         IPAddress ipAddress { get; set; }
         IPEndPoint localEndPoint { get; set; }
         List<string> DataPackageList { get; set; } = new List<string>();
+        public string TempReadingOutput { get; set; }
 
         public ConnectionHandler(string connectionType)
         {
@@ -35,14 +41,7 @@ namespace MyICSv2._1
         /*Currently need to add a means in which the ConnectionHandler is able to preemptively connect to a pre-determined IP address or Device ID, and 
          then utilize these propterties to both authenticate inbound data, and to establish a I/O stream from which to port incoming device data*/
 
-
-
-
-
-
-
-
-        public void HandleTcpConnection(string deviceIPAddress)
+        public void TcpConnection(string deviceIPAddress)
         {
             //TCP Connection Handler//Acquiring the IP Address of the host machine
             //IPAddress and IPEndPoint information for Server (DCS or SCADA System)        
@@ -86,14 +85,12 @@ namespace MyICSv2._1
                         //Encode the new data on the formatted byte array to a string and update the UI with the new reading                    
                         strData = Encoding.ASCII.GetString(Buffer);
 
-                        foreach(string s in strData.Split('|'))
-                        {
-                            DataPackageList.Add(s);
-                        }
-                        //DataPackageList = strData.Split('|').ToList();
-                    
-                    socket.Close();
-                    accepted.Close();
+                        DataPackageList = strData.Split('|').ToList();
+                        TempReadingOutput = DataPackageList[1];
+
+
+                        socket.Close();
+                        accepted.Close();
                 }
                     catch (Exception ex)
                     {

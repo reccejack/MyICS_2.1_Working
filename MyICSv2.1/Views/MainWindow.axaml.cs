@@ -20,6 +20,8 @@ public partial class MainWindow : Window
 
     private IDbContextFactory<AppDbContext> _dbContextFactory;
 
+    public ConnectionHandler connectionHandler = new ConnectionHandler("127.0.0.1");
+
 
     private MainViewModel ViewModel => (MainViewModel)DataContext;
     public MainWindow()
@@ -94,8 +96,12 @@ public partial class MainWindow : Window
         //await ViewModel.UpdateDevice(ViewModel.Devices[0].ReadingType);
         for(int i = 0; i < ViewModel.SelectedProcessDevices.Count; i++)
         {
-            await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], "0000");
+            //await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], "0000");
+            await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], connectionHandler.TempReadingOutput);
             System.Diagnostics.Debug.WriteLine($"Selected: {ViewModel.SelectedProcessDevices[i].ReadingType}");
         }        
     }
+
+    //This will not suffice for a continual I/O stream of data.  Need to build in a 'while' loop with 'AppState' or something similar, to maintain
+    //data pipeline.  
 }
