@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using MyICSv2._1.Models;
@@ -15,9 +16,6 @@ namespace MyICSv2._1.Views;
 
 public partial class MainWindow : Window
 {
-    //public ObservableCollection<Device> Devices { get; } = new ObservableCollection<Device>();
-    //public ObservableCollection<Process> Processes { get; } = new ObservableCollection<Process>();
-
     private IDbContextFactory<AppDbContext> _dbContextFactory;
 
     public ConnectionHandler connectionHandler = new ConnectionHandler("127.0.0.1");
@@ -33,7 +31,6 @@ public partial class MainWindow : Window
             InputListBox1.ItemsSource = ViewModel.Processes;
 
             _dbContextFactory = ViewModel._dbFactory;
-            //_dbContextFactory = App.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
             await ViewModel.LoadItemsAsync();
         };
     }    
@@ -67,7 +64,6 @@ public partial class MainWindow : Window
 
         if (result is not null && dialog.SelectedProcessId is not null)
         {
-            //await ViewModel.AddDeviceAsync(result, ViewModel.SelectedProcess.ProcessId);
             await ViewModel.AddDeviceAsync(result, dialog.SelectedProcessId);
         }
     }
@@ -85,21 +81,29 @@ public partial class MainWindow : Window
     {
         if (InputListBox1.SelectedItem is not IndustryProcess selectedProcess)
             return;
+
         // Load devices for the selected process
         await ViewModel.LoadSelectedProcessDevicesAsync(selectedProcess);
-        //ExampleBlock.Text = $"Process ID: {selectedProcess.ProcessId} Process Name: {selectedProcess.IsAlarm}";
     }
 
     //EXPERIMENTATION (16 OCT 2026)
     private async void OnClickConnect(object? sender, RoutedEventArgs e)
     {
-        //await ViewModel.UpdateDevice(ViewModel.Devices[0].ReadingType);
-        for(int i = 0; i < ViewModel.SelectedProcessDevices.Count; i++)
+
+        //This code is needs to be refactored to accomplish the following:
+        /*
+         1.  Target the SelectedProcessDevice
+         2.  Ingest the I/O data: Temp reading and display it in lieu of generic 'ReadingType' property output
+         3.  Facilitate code for 'Disconnect'
+         */
+        for (int i = 0; i < ViewModel.SelectedProcessDevices.Count; i++)
         {
             //await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], "0000");
+            connectionHandler.TcpConnection("127.0.0.1");
             await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], connectionHandler.TempReadingOutput);
+
             System.Diagnostics.Debug.WriteLine($"Selected: {ViewModel.SelectedProcessDevices[i].ReadingType}");
-        }        
+        } 
     }
 
     //This will not suffice for a continual I/O stream of data.  Need to build in a 'while' loop with 'AppState' or something similar, to maintain
