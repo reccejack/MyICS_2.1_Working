@@ -1,0 +1,9 @@
+NAME	DESCR	IPv4			COMMPORT	COMM  	MAC
+PC	Server  169.254.102.3	NA			8888	AC-91-A1-F5-52-5C
+Device1 Client	169.254.102.20	NA	6		8888	0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED 
+Device2	Cliebt	169.254.102.22	NA	3		8888	0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF
+
+
+
+
+[x] [6] ====> [Connection to PC]
