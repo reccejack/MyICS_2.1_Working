@@ -7,3 +7,14 @@ Device2	Cliebt	169.254.102.22	NA	3		8888	0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xEF
 
 
 [x] [6] ====> [Connection to PC]
+
+
+
+"<DeviceID>|<PhyReading>|<IPv4>|<MAC>"
+
+
+
+
+packet[0] = deviceId1;
+packet[1] = b;   
+packet[2] = 1;   

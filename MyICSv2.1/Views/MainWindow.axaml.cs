@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using MyICSv2._1.Models;
 using MyICSv2._1.Data;
@@ -17,10 +18,6 @@ namespace MyICSv2._1.Views;
 public partial class MainWindow : Window
 {
     private IDbContextFactory<AppDbContext> _dbContextFactory;
-
-    public ConnectionHandler connectionHandler = new ConnectionHandler("127.0.0.1");
-
-
     private MainViewModel ViewModel => (MainViewModel)DataContext;
     public MainWindow()
     {        
@@ -57,7 +54,7 @@ public partial class MainWindow : Window
     //Add device to a process EventHandler
     private async void OnClick_AddDevice(object? sender, RoutedEventArgs e)
     {
-        if (ViewModel.SelectedProcess is null) { return; }
+        //if (ViewModel.SelectedProcess is null) { return; }
 
         var dialog = new AddDeviceWindow();
         var result = await dialog.ShowDialog<Device?>(this);
@@ -94,18 +91,31 @@ public partial class MainWindow : Window
         /*
          1.  Target the SelectedProcessDevice
          2.  Ingest the I/O data: Temp reading and display it in lieu of generic 'ReadingType' property output
-         3.  Facilitate code for 'Disconnect'
          */
-        for (int i = 0; i < ViewModel.SelectedProcessDevices.Count; i++)
-        {
-            //await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], "0000");
-            connectionHandler.TcpConnection("127.0.0.1");
-            await ViewModel.UpdateDevice(ViewModel.SelectedProcessDevices[i], connectionHandler.TempReadingOutput);
 
-            System.Diagnostics.Debug.WriteLine($"Selected: {ViewModel.SelectedProcessDevices[i].ReadingType}");
-        } 
+        //foreach (Device d in ViewModel.SelectedProcessDevices)
+        //{          
+        //    System.Diagnostics.Debug.WriteLine($"Selected: {d.DeviceName}");
+        //    System.Diagnostics.Debug.WriteLine($"Selected: {d.DeviceAddressIPv4}");            
+        //    var connectionHandler = new ConnectionHandler(d);
+        //    connectionHandler.TcpConnection(d.DeviceAddressIPv4.ToString(), Int32.Parse(d.SubProcess));
+        //    if (connectionHandler != null)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"Selected: {connectionHandler.ReadingOutput}");                
+        //        //Thread.Sleep(1000); // Sleep for 1 second to simulate a delay between iterations                
+        //    } else
+        //    {
+        //        System.Diagnostics.Debug.WriteLine($"ConnectionHandler is null");
+        //    }
+        //}
+
+        //EXPERIMENTATION (03 NOV 2026)
+        var vm = ViewModel;
+        ConnectionHandler connectionHandler1 = new ConnectionHandler(ViewModel.SelectedProcessDevices[0], (dev, text) => _ = vm.UpdateDevice(dev, text));
+        ConnectionHandler connectionHandler2 = new ConnectionHandler(ViewModel.SelectedProcessDevices[1], (dev, text) => _ = vm.UpdateDevice(dev, text));
+
+        connectionHandler1.TcpConnection(ViewModel.SelectedProcessDevices[0].DeviceAddressIPv4.ToString(), Int32.Parse(ViewModel.SelectedProcessDevices[0].SubProcess));
+        connectionHandler2.TcpConnection(ViewModel.SelectedProcessDevices[1].DeviceAddressIPv4.ToString(), Int32.Parse(ViewModel.SelectedProcessDevices[1].SubProcess));
+
     }
-
-    //This will not suffice for a continual I/O stream of data.  Need to build in a 'while' loop with 'AppState' or something similar, to maintain
-    //data pipeline.  
 }

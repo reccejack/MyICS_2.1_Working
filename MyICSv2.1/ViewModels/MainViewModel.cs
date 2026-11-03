@@ -148,60 +148,17 @@ public partial class MainViewModel : ViewModelBase
         {
             SelectedProcessDevices.Clear();
             foreach (var d in devices)
+            {
                 SelectedProcessDevices.Add(d);
-            // Update status text with selected process and device count and DB path
+            }
+
+            System.Diagnostics.Debug.WriteLine($"Selected Process Devices: {SelectedProcessDevices.Count}");
+
             var dbPath = MyICSv2._1.App.DbPath ?? "(unknown db path)";                                   
         });
     }
-
-    //public async Task UpdateDevice(Device device){}
-
-    //public async Task UpdateDevice(Device device)
-    //{
-    //    //POTENTIAL FUTURE 'HISTORIAN' IMPLEMENTATION
-    //    //await using var db = await _dbFactory.CreateDbContextAsync();
-    //    //var existingDevice = await db.Devices.FirstOrDefaultAsync(d => d.DeviceId == device.DeviceId);
-    //    //if (existingDevice != null)
-    //    //{
-    //    //    existingDevice.ReadingType = device.ReadingType;
-    //    //    existingDevice.DeviceAverage = device.DeviceAverage;
-    //    //    existingDevice.DateTime = device.DateTime;
-    //    //    await db.SaveChangesAsync();
-    //    //}
-
-    //    for (int i = 0; i < SelectedProcessDevices.Count; i++)
-    //    {
-    //        if (SelectedProcessDevices[i].DeviceId == device.DeviceId)
-    //        {
-
-    //            //PIPE IN I/O DATA HERE
-    //            string updatedReadingType = "testString";
-
-    //            await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-    //            {
-    //                SelectedProcessDevices[i].ReadingType = updatedReadingType; // Notify UI of the change
-    //            });
-
-    //            break;
-    //        }
-    //    }            
-    //}
-
     public async Task UpdateDevice(Device processDevice, string output)
     {
-
-        //POTENTIAL FUTURE 'HISTORIAN' IMPLEMENTATION
-        //await using var db = await _dbFactory.CreateDbContextAsync();
-        //var existingDevice = await db.Devices.FirstOrDefaultAsync(d => d.DeviceId == device.DeviceId);
-        //if (existingDevice != null)
-        //{
-        //    existingDevice.ReadingType = device.ReadingType;
-        //    existingDevice.DeviceAverage = device.DeviceAverage;
-        //    existingDevice.DateTime = device.DateTime;
-        //    await db.SaveChangesAsync();
-        //}
-
-        //TEST CODE (POTENTIALLY DELETE HERE SOON)
         await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             processDevice.ReadingType = output; // Notify UI of the change
