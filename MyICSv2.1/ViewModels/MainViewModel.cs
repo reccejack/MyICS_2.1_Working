@@ -22,6 +22,7 @@ public partial class MainViewModel : ViewModelBase
     public ObservableCollection<Device> Devices { get; } = new ObservableCollection<Device>();
     public ObservableCollection<IndustryProcess> Processes { get; } = new ObservableCollection<IndustryProcess>();
     public ObservableCollection<Device> SelectedProcessDevices { get; } = new ObservableCollection<Device>();
+    //public ObservableCollection<Device> SelectedDevices { get; } = new ObservableCollection<Device>();
 
     public IDbContextFactory<AppDbContext> _dbFactory;
 
@@ -30,6 +31,11 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty]
     public IndustryProcess? selectedProcess;
+
+    [ObservableProperty]
+    public Device? selectedDevice;
+
+
     //Process Repository specific code END
 
     public MainViewModel()
@@ -127,6 +133,14 @@ public partial class MainViewModel : ViewModelBase
         _ = LoadSelectedProcessDevicesAsync(value);
     }
 
+    partial void OnSelectedDeviceChanged(Device? value)
+    {
+        System.Diagnostics.Debug.WriteLine($"Selected: {value?.DeviceName ?? "null"}");
+        if (value != null)
+            value.DeviceStatus = "Selected";
+        //_ = LoadSelectedDevice(value);
+    }
+
     public async Task LoadSelectedProcessDevicesAsync(IndustryProcess? process)
     {
         if (process == null)
@@ -157,6 +171,7 @@ public partial class MainViewModel : ViewModelBase
             var dbPath = MyICSv2._1.App.DbPath ?? "(unknown db path)";                                   
         });
     }
+
     public async Task UpdateDevice(Device processDevice, string output)
     {
         await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>

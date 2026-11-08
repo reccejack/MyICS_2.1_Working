@@ -18,6 +18,7 @@ namespace MyICSv2._1.Models
     public class Device : ObservableObject
     {
         private string _readingType = string.Empty;
+        public ConnectionHandler DeviceConnectionHandler = new ConnectionHandler();
 
         [Key]
         public int DeviceId { get; set; }
@@ -52,7 +53,7 @@ namespace MyICSv2._1.Models
         public bool? IsActive { get; set; } = null;
 
         //public string DeviceStatus => IsActive.HasValue ? (IsActive.Value ? "Active" : "Inactive") : "Unknown";
-        public string DeviceStatus { get; set; } = "Unknown";
+        public string DeviceStatus { get; set; } = "Unknown"; //This needs to be a boolean value later on (good for now)
 
         public string DeviceSecurity { get; set; } = "AES256";
         public DateTime DateTime { get; set; } = DateTime.Now;

@@ -103,7 +103,7 @@
         </Grid>
 
         <!--Device Dataview Field-->
-        <ListBox x:Name="InputListBoxDevices" ItemsSource="{Binding SelectedProcessDevices}" Height="120">
+        <ListBox x:Name="InputListBoxDevices" ItemsSource="{Binding SelectedProcessDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}" Height="120">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="*, *, *, *, *, *, *, *" Margin="2" Background="WhiteSmoke">

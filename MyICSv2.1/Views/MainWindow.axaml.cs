@@ -83,39 +83,40 @@ public partial class MainWindow : Window
         await ViewModel.LoadSelectedProcessDevicesAsync(selectedProcess);
     }
 
-    //EXPERIMENTATION (16 OCT 2026)
-    private async void OnClickConnect(object? sender, RoutedEventArgs e)
+    //EXPERIMENTATION (08 NOV 2026)
+    private async void OnClick_SelectDevice(object? sender, RoutedEventArgs e)
     {
+        if (InputListBoxDevices.SelectedItem is not Device selectedDevice)
+        {
+            System.Diagnostics.Debug.WriteLine("No device selected.");
+            return;
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"Functionality not working");
+        }
 
-        //This code is needs to be refactored to accomplish the following:
-        /*
-         1.  Target the SelectedProcessDevice
-         2.  Ingest the I/O data: Temp reading and display it in lieu of generic 'ReadingType' property output
-         */
-
-        //foreach (Device d in ViewModel.SelectedProcessDevices)
-        //{          
-        //    System.Diagnostics.Debug.WriteLine($"Selected: {d.DeviceName}");
-        //    System.Diagnostics.Debug.WriteLine($"Selected: {d.DeviceAddressIPv4}");            
-        //    var connectionHandler = new ConnectionHandler(d);
-        //    connectionHandler.TcpConnection(d.DeviceAddressIPv4.ToString(), Int32.Parse(d.SubProcess));
-        //    if (connectionHandler != null)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine($"Selected: {connectionHandler.ReadingOutput}");                
-        //        //Thread.Sleep(1000); // Sleep for 1 second to simulate a delay between iterations                
-        //    } else
-        //    {
-        //        System.Diagnostics.Debug.WriteLine($"ConnectionHandler is null");
-        //    }
-        //}
-
-        //EXPERIMENTATION (03 NOV 2026)
+        // Store the selected device for connection handling        
+        //await ViewModel.LoadSelectedDevice(selectedDevice);
+        System.Diagnostics.Debug.WriteLine($"Selected Device: {selectedDevice.DeviceName}");
+        selectedDevice.DeviceStatus = "Selected"; // Update this model proptery to be a boolean value later
+    }
+    private void OnClickConnect(object? sender, RoutedEventArgs e)
+    {
         var vm = ViewModel;
-        ConnectionHandler connectionHandler1 = new ConnectionHandler(ViewModel.SelectedProcessDevices[0], (dev, text) => _ = vm.UpdateDevice(dev, text));
-        ConnectionHandler connectionHandler2 = new ConnectionHandler(ViewModel.SelectedProcessDevices[1], (dev, text) => _ = vm.UpdateDevice(dev, text));
+        var currentDevice = vm.SelectedDevice;
 
-        connectionHandler1.TcpConnection(ViewModel.SelectedProcessDevices[0].DeviceAddressIPv4.ToString(), Int32.Parse(ViewModel.SelectedProcessDevices[0].SubProcess));
-        connectionHandler2.TcpConnection(ViewModel.SelectedProcessDevices[1].DeviceAddressIPv4.ToString(), Int32.Parse(ViewModel.SelectedProcessDevices[1].SubProcess));
+        if (currentDevice is null)
+        {
+            System.Diagnostics.Debug.WriteLine("No device selected for connection.");
+            return;
+        }
 
+        currentDevice.DeviceConnectionHandler =
+            new ConnectionHandler(currentDevice, (dev, text) => _ = vm.UpdateDevice(dev, text));
+
+        currentDevice.DeviceConnectionHandler.TcpConnection(
+            currentDevice.DeviceAddressIPv4.ToString(),
+            int.Parse(currentDevice.SubProcess));
     }
 }
