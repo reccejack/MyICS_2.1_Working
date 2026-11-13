@@ -47,7 +47,7 @@ namespace MyICSv2._1.Models
             if (device == null) return;
             if (!Devices.Contains(device)) Devices.Add(device);
             // Note: inverse navigation (device.Processes) will be managed by EF when tracking entities
-        }
+        }        
     }
 }
 

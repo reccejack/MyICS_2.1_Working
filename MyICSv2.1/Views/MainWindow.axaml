@@ -93,12 +93,12 @@
         <!--Device Panel Header-->
         <Grid ColumnDefinitions="*, *, *, *, *, *, *, *" Background="LightGray">
             <Label Content="Device ID" Grid.Column="0" Margin="10,0,0,0"/>
-            <Label Content="Make" Grid.Column="1" Margin="10,0,0,0"/>
-            <Label Content="Model" Grid.Column="2" Margin="10,0,0,0"/>
+            <Label Content="Device Name" Grid.Column="1" Margin="10,0,0,0" HorizontalContentAlignment="Left"/>
+            <Label Content="Port" Grid.Column="2" Margin="10,0,0,0" HorizontalContentAlignment="Center"/>
             <Label Content="Reading" Grid.Column="3" Margin="10,0,0,0"/>
-            <Label Content="Mean/Mode" Grid.Column="4" Margin="10,0,0,0"/>
-            <Label Content="Protocol" Grid.Column="5" Margin="10,0,0,0"/>
-            <Label Content="Security" Grid.Column="6" Margin="10,0,0,0"/>
+            <Label Content="Status" Grid.Column="4" Margin="10,0,0,0"/>
+            <Label Content="Address" Grid.Column="5" Margin="10,0,0,0"/>
+            <Label Content="Security" Grid.Column="6" Margin="10,0,0,0" HorizontalContentAlignment="Center"/>
             <Label Content="DTG" Grid.Column="7" Margin="10,0,0,0"/>
         </Grid>
 
@@ -109,11 +109,11 @@
                     <Grid ColumnDefinitions="*, *, *, *, *, *, *, *" Margin="2" Background="WhiteSmoke">
                         <TextBlock Text="{Binding DeviceId}" Grid.Column="0" Margin="10,2,0,2" Foreground="Black"/>
                         <TextBlock Text="{Binding DeviceName}" Grid.Column="1" Margin="10,2,0,2" Foreground="Black"/>
-                        <TextBlock Text="{Binding SubProcess}" Grid.Column="2" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding SubProcess}" Grid.Column="2" Margin="10,2,0,2" Foreground="Black" HorizontalAlignment="Center"/>
                         <TextBlock Text="{Binding ReadingType}" Grid.Column="3" Margin="10,2,0,2" Foreground="Black"/>
-                        <TextBlock Text="{Binding DeviceAverage}" Grid.Column="4" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DeviceStatus}" Grid.Column="4" Margin="10,2,0,2" Foreground="Black"/>
                         <TextBlock Text="{Binding DeviceAddressIPv4}" Grid.Column="5" Margin="10,2,0,2" Foreground="Black"/>
-                        <TextBlock Text="{Binding DeviceSecurity}" Grid.Column="6" Margin="10,2,0,2" Foreground="Black"/>
+                        <TextBlock Text="{Binding DeviceSecurity}" Grid.Column="6" Margin="10,2,0,2" Foreground="Black" HorizontalAlignment="Center"/>
                         <TextBlock Text="{Binding DateTime}" Grid.Column="7" Margin="10,2,0,2" Foreground="Black"/>
                     </Grid>
                 </DataTemplate>

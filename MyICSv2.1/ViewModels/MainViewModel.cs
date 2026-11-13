@@ -177,6 +177,29 @@ public partial class MainViewModel : ViewModelBase
         await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             processDevice.ReadingType = output; // Notify UI of the change
+            
+            if(processDevice.DeviceConnectionHandler.AlarmMessage == "Alarm")
+            {
+                processDevice.DeviceStatus = "Alarm";
+            }
         });
-    }
+    }    
+
+    //public void TripAlarm(IndustryProcess process, Device device)
+    //{
+    //    if (process == null) return;
+    //    //IsAlarm = true;
+    //    //ProcessStatus = "Alarm";
+    //    //ProcessReport = $"Alarm tripped by device {device.DeviceName} ({device.DeviceAddressIPv4})";
+
+    //    foreach (Device d in process.Devices)
+    //    {
+    //        if (d.DeviceAddressIPv4 == device.DeviceAddressIPv4)
+    //        {
+    //            process.IsAlarm = true;
+    //            process.ProcessStatus = "Alarm";
+    //            process.ProcessReport = $"Alarm: {d.DeviceName}";
+    //        }
+    //    }
+    //}
 }

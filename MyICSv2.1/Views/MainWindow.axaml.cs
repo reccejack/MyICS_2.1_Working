@@ -115,8 +115,6 @@ public partial class MainWindow : Window
         currentDevice.DeviceConnectionHandler =
             new ConnectionHandler(currentDevice, (dev, text) => _ = vm.UpdateDevice(dev, text));
 
-        currentDevice.DeviceConnectionHandler.TcpConnection(
-            currentDevice.DeviceAddressIPv4.ToString(),
-            int.Parse(currentDevice.SubProcess));
+        currentDevice.DeviceConnectionHandler.TcpConnection(currentDevice.DeviceAddressIPv4.ToString(), int.Parse(currentDevice.SubProcess));        
     }
 }

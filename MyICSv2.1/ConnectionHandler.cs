@@ -36,6 +36,8 @@ namespace MyICSv2._1
         IPEndPoint localEndPoint { get; set; }
         public string ReadingOutput { get; set; }
         public int PortNumber { get; set; }
+        public bool AlarmStatus { get; set; } = false;
+        public string AlarmMessage { get; set; } = "No Alarm";
         public List<string> NAT = new List<string>()
         {
             "169.254.102.3",
@@ -122,8 +124,14 @@ namespace MyICSv2._1
                             //strData = bytesRead > 0 ? Buffer[0].ToString() : "";
                             strData = tempF.ToString("F1"); // Format the temperature to one decimal place
                             ReadingOutput = strData;
+                            if (Double.Parse(ReadingOutput) >= 90)
+                            {
+                                //AlarmStatus = true;
+                                //AlarmMessage = "Alarm";                              
+                                System.Diagnostics.Debug.WriteLine($"Alarm Triggered: {ReadingOutput}°F");
+                            }
                             if (_device is not null) _onReading?.Invoke(_device, strData);
-                        }
+                        }                        
 
                         //socket.Close();
                         accepted.Close();
