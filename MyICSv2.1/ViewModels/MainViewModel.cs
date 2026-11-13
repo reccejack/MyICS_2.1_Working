@@ -172,18 +172,29 @@ public partial class MainViewModel : ViewModelBase
         });
     }
 
-    public async Task UpdateDevice(Device processDevice, string output)
+    public async Task UpdateReading(Device processDevice, string output)
     {
         await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             processDevice.ReadingType = output; // Notify UI of the change
-            
-            if(processDevice.DeviceConnectionHandler.AlarmMessage == "Alarm")
+        });
+    }    
+
+    //CURRENTLY WORKING THIS METHOD TO ATTEMPT ON UPDATING THE DEVICE STATUS ALARM
+    public async Task UpdateDeviceStatus(Device processDevice)
+    {
+        await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            if(processDevice.DeviceConnectionHandler.AlarmStatus == true)
             {
                 processDevice.DeviceStatus = "Alarm";
             }
+            else
+            {
+                processDevice.DeviceStatus = "Operational";
+            }
         });
-    }    
+    }
 
     //public void TripAlarm(IndustryProcess process, Device device)
     //{

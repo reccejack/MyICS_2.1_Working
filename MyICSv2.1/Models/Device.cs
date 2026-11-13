@@ -18,6 +18,7 @@ namespace MyICSv2._1.Models
     public class Device : ObservableObject
     {
         private string _readingType = string.Empty;
+        private string _deviceStatus = "Unknown";
         public ConnectionHandler DeviceConnectionHandler = new ConnectionHandler();
 
         [Key]
@@ -53,19 +54,21 @@ namespace MyICSv2._1.Models
         public bool? IsActive { get; set; } = null;
 
         //public string DeviceStatus => IsActive.HasValue ? (IsActive.Value ? "Active" : "Inactive") : "Unknown";
-        public string DeviceStatus { get; set; } = "Unknown"; //This needs to be a boolean value later on (good for now)
-
+        public string DeviceStatus
+        {
+            get => _deviceStatus;
+            set => SetProperty(ref _deviceStatus, value);
+        }
         public string DeviceSecurity { get; set; } = "AES256";
         public DateTime DateTime { get; set; } = DateTime.Now;
         public Device() { DeviceStatus = "Unknown"; }
 
         public Device(string name)
         {
-            DeviceName = name;
-            DeviceStatus = "Unknown";
+            DeviceName = name;            
         }
 
         // Navigation property for many-to-many relationship with Process
-        public virtual ICollection<IndustryProcess> Processes { get; set; } = new List<IndustryProcess>();        
+        public virtual ICollection<IndustryProcess> Processes { get; set; } = new List<IndustryProcess>();                
     }
 }

@@ -112,9 +112,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        currentDevice.DeviceConnectionHandler =
-            new ConnectionHandler(currentDevice, (dev, text) => _ = vm.UpdateDevice(dev, text));
-
+        currentDevice.DeviceConnectionHandler = new ConnectionHandler(currentDevice, (dev, text) => _ = vm.UpdateReading(dev, text), (dev) => _ = vm.UpdateDeviceStatus(dev));        
         currentDevice.DeviceConnectionHandler.TcpConnection(currentDevice.DeviceAddressIPv4.ToString(), int.Parse(currentDevice.SubProcess));        
     }
 }

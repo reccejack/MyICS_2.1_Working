@@ -37,7 +37,6 @@ namespace MyICSv2._1
         public string ReadingOutput { get; set; }
         public int PortNumber { get; set; }
         public bool AlarmStatus { get; set; } = false;
-        public string AlarmMessage { get; set; } = "No Alarm";
         public List<string> NAT = new List<string>()
         {
             "169.254.102.3",
@@ -47,8 +46,9 @@ namespace MyICSv2._1
 
         private readonly Device? _device;
         private readonly Action<Device, string>? _onReading;
+        private readonly Action<Device>? _onAlarm;
 
-        
+
 
         public ConnectionHandler() { }
         public ConnectionHandler(Device device)
@@ -57,12 +57,13 @@ namespace MyICSv2._1
             DeviceIPAddress = device.DeviceAddressIPv4.ToString();            
         }
 
-        public ConnectionHandler(Device device, Action<Device, string>? onReading = null)
+        public ConnectionHandler(Device device, Action<Device, string>? onReading = null, Action<Device>? onAlarm = null)
         {
             //Target specific Device 
             DeviceIPAddress = device.DeviceAddressIPv4.ToString();
             _device = device;
             _onReading = onReading;
+            _onAlarm = onAlarm;
         }
 
         /*Currently need to add a means in which the ConnectionHandler is able to preemptively connect to a pre-determined IP address or Device ID, and 
@@ -124,13 +125,22 @@ namespace MyICSv2._1
                             //strData = bytesRead > 0 ? Buffer[0].ToString() : "";
                             strData = tempF.ToString("F1"); // Format the temperature to one decimal place
                             ReadingOutput = strData;
-                            if (Double.Parse(ReadingOutput) >= 90)
+                            if(Double.Parse(ReadingOutput) >= 80)
                             {
-                                //AlarmStatus = true;
-                                //AlarmMessage = "Alarm";                              
-                                System.Diagnostics.Debug.WriteLine($"Alarm Triggered: {ReadingOutput}°F");
+                                AlarmStatus = true;
+                                System.Diagnostics.Debug.WriteLine($"Alarm Triggered: {ReadingOutput}°F");                                
                             }
+                            //if (Double.Parse(ReadingOutput) >= 80)
+                            //{
+                            //    AlarmStatus = true;                         
+                            //    System.Diagnostics.Debug.WriteLine($"Alarm Triggered: {ReadingOutput}°F");
+                            //}
+
                             if (_device is not null) _onReading?.Invoke(_device, strData);
+                            if (_onAlarm != null && AlarmStatus)
+                            {
+                                _onAlarm(_device);
+                            }
                         }                        
 
                         //socket.Close();
